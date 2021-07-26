@@ -22,7 +22,7 @@ BEGIN
             VALUE "FileDescription",    "MotaCoin-Qt (OSS GUI client for MotaCoin)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "MotaCoin-qt"
-            VALUE "LegalCopyright",     "2009-14 The Bitcoin developers, 2012-14 The PPCoin developers, 2014-18 The MotaCoin developers"
+            VALUE "LegalCopyright",     "2009-14 The Bitcoin developers, 2012-14 The PPCoin developers, 2014-20 The MotaCoin developers"
             VALUE "LegalTrademarks1",   "Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "MotaCoin-qt.exe"
             VALUE "ProductName",        "MotaCoin-Qt"

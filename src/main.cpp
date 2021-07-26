@@ -12,12 +12,12 @@
 #include "init.h"
 #include "ui_interface.h"
 #include "kernel.h"
+#include "types/camount.h"
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int_distribution.hpp>
-
 
 
 using namespace std;
@@ -631,7 +631,7 @@ bool CTxMemPool::accept(CTxDB& txdb, CTransaction &tx, bool fCheckInputs,
         // you should add code here to check that the transaction does a
         // reasonable number of ECDSA signature verifications.
 
-        int64_t nFees = tx.GetValueIn(mapInputs)-tx.GetValueOut();
+        int64_t nFees = tx.GetValueMapIn(mapInputs)-tx.GetValueOut();
         unsigned int nSize = ::GetSerializeSize(tx, SER_NETWORK, PROTOCOL_VERSION);
 
         // Don't accept it if it can't get into a block
@@ -969,11 +969,11 @@ uint256 WantedByOrphan(const CBlock* pblockOrphan)
 }
 
 // miner's coin base reward
-int64_t GetProofOfWorkReward(int64_t nFees)
+int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 {
     int64_t nSubsidy = 0 * COIN;
     
-    if (pindexBest->nHeight > 1 && pindexBest->nHeight <= 2) //premine
+    if (nHeight > 1 && nHeight <= 2) //premine
     {
       nSubsidy = 53100000 * COIN;    
                                     //  Dispenary Recruitment Fund:    10 million MotaCoins
@@ -989,87 +989,87 @@ int64_t GetProofOfWorkReward(int64_t nFees)
       
       return nSubsidy + nFees;
     }
-    else if(pindexBest->nHeight < 10000)    //  Insignificant reward until April 10th.(Launch date / Live trading) (4,200 Mota released)
+    else if(nHeight < 10000)    //  Insignificant reward until April 10th.(Launch date / Live trading) (4,200 Mota released)
     {
         nSubsidy = 0.42 * COIN;
     }
-    else if(pindexBest->nHeight < 61742)    //     3,880,650  Mota released
+    else if(nHeight < 61742)    //     3,880,650  Mota released
     {
         nSubsidy = 75 * COIN;
     }
-    else if(pindexBest->nHeight < 123484)   //    4,074,972 Mota released (1 year elapsed)
+    else if(nHeight < 123484)   //    4,074,972 Mota released (1 year elapsed)
     {
         nSubsidy = 66 * COIN;
     }
-    else if(pindexBest->nHeight < 185226)   //    3,395,810  Mota released
+    else if(nHeight <= 185226)   //    3,395,810  Mota released
     {
         nSubsidy = 55 * COIN;
     }
-    else if(pindexBest->nHeight < 246968)   //    3,087,100 Mota released (2 years elapsed)
+    else if(nHeight < 246968)   //    3,087,100 Mota released (2 years elapsed)
     {
         nSubsidy = 50 * COIN;
     }
-    else if(pindexBest->nHeight < 308710)   //    2,901,874 Mota released
+    else if(nHeight < 308710)   //    2,901,874 Mota released
     {
         nSubsidy = 47 * COIN;
     }
-    else if(pindexBest->nHeight < 370452)   //    2,716,648 Mota released (3 years elapsed)
+    else if(nHeight <= 370452)   //    2,716,648 Mota released (3 years elapsed)
     {
         nSubsidy = 44 * COIN;
     }
-    else if(pindexBest->nHeight < 432194)   //    2,531,422 Mota released 
+    else if(nHeight < 432194)   //    2,531,422 Mota released 
     {
         nSubsidy = 41 * COIN;
     }
-    else if(pindexBest->nHeight < 493936)   //    2,407,938 Mota released (4 years elapsed)
+    else if(nHeight < 493936)   //    2,407,938 Mota released (4 years elapsed)
     {
         nSubsidy = 39 * COIN;
     }
-    else if(pindexBest->nHeight < 555678)   //    2,284,454 Mota released 
+    else if(nHeight <= 555678)   //    2,284,454 Mota released 
     {
         nSubsidy = 37 * COIN;
     }
-    else if(pindexBest->nHeight < 617420)   //    2,160,970 Mota released (6 years elapsed)
+    else if(nHeight < 617420)   //    2,160,970 Mota released (6 years elapsed)
     {
         nSubsidy = 35 * COIN;
     }
-    else if(pindexBest->nHeight < 679162)   //    2,037,486 Mota released
+    else if(nHeight < 679162)   //    2,037,486 Mota released
     {
         nSubsidy = 33 * COIN;
     }
-    else if(pindexBest->nHeight < 740904)   //    1,975,744 Mota released (7 years elapsed)
+    else if(nHeight < 740904)   //    1,975,744 Mota released (7 years elapsed)
     {
         nSubsidy = 32 * COIN;
     }
-    else if(pindexBest->nHeight < 802646)   //    1,914,002 Mota released
+    else if(nHeight < 802646)   //    1,914,002 Mota released
     {
         nSubsidy = 31 * COIN;
     }
-    else if(pindexBest->nHeight < 864388)   //    1,852,260 Mota released (8 years elapsed)
+    else if(nHeight < 864388)   //    1,852,260 Mota released (8 years elapsed)
     {
         nSubsidy = 30 * COIN;
     }
-    else if(pindexBest->nHeight < 926130)   //    1,790,518 Mota released
+    else if(nHeight < 926130)   //    1,790,518 Mota released
     {
         nSubsidy = 29 * COIN;
     }
-    else if(pindexBest->nHeight < 987872)   //   1,728,776 Mota released (9 years elapsed)
+    else if(nHeight < 987872)   //   1,728,776 Mota released (9 years elapsed)
     {
         nSubsidy = 28 * COIN;
     }
-    else if(pindexBest->nHeight < 1049614)   //     1,667,034 Mota released
+    else if(nHeight < 1049614)   //     1,667,034 Mota released
     {
         nSubsidy = 27 * COIN;
     }
-    else if(pindexBest->nHeight < 1111356)   //     1,605,292 Mota released (10 years elapsed)
+    else if(nHeight < 1111356)   //     1,605,292 Mota released (10 years elapsed)
     {
         nSubsidy = 26 * COIN;
     }
-else if(pindexBest->nHeight < 1173098)   //       1,543,550 Mota released (10 years elapsed)
+	else if(nHeight < 1173098)   //       1,543,550 Mota released (10 years elapsed)
     {
         nSubsidy = 25 * COIN;
     }
-    else if(pindexBest->nHeight < 1234526)   //    1,339,374 Mota released (10 years elapsed)
+    else if(nHeight < 1234526)   //    1,339,374 Mota released (10 years elapsed)
     {
         nSubsidy = 21.81 * COIN;
     }
@@ -1337,7 +1337,7 @@ bool CTransaction::DisconnectInputs(CTxDB& txdb)
 
 
 bool CTransaction::FetchInputs(CTxDB& txdb, const map<uint256, CTxIndex>& mapTestPool,
-                               bool fBlock, bool fMiner, MapPrevTx& inputsRet, bool& fInvalid)
+                               bool fBlock, bool fMiner, MapPrevTx& inputsRet, bool& fInvalid) const
 {
     // FetchInputs can return false either because we just haven't seen some inputs
     // (in which case the transaction should be stored as an orphan)
@@ -1424,7 +1424,7 @@ const CTxOut& CTransaction::GetOutputFor(const CTxIn& input, const MapPrevTx& in
     return txPrev.vout[input.prevout.n];
 }
 
-int64_t CTransaction::GetValueIn(const MapPrevTx& inputs) const
+int64_t CTransaction::GetValueMapIn(const MapPrevTx& inputs) const
 {
     if (IsCoinBase())
         return 0;
@@ -1598,7 +1598,24 @@ bool CTransaction::ClientConnectInputs()
     return true;
 }
 
+bool CTransaction::GetMapTxInputs(MapPrevTx& mapInputs, bool fBlock, bool fMiner) const
+{
+	CTxDB txdb("r");
+	std::map<uint256, CTxIndex> mapUnused;
+	bool fInvalid = false;
 
+	if (!this->FetchInputs(txdb, mapUnused, fBlock, fMiner, mapInputs, fInvalid))
+	{
+		if (fInvalid)
+		{
+			printf("Invalid TX attempted to set in GetMapTXInputs\n");
+			
+			return false;
+		}
+	}
+
+	return true;
+}
 
 
 bool CBlock::DisconnectBlock(CTxDB& txdb, CBlockIndex* pindex)
@@ -1693,7 +1710,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
             if (nSigOps > MAX_BLOCK_SIGOPS)
                 return DoS(100, error("ConnectBlock() : too many sigops"));
 
-            int64_t nTxValueIn = tx.GetValueIn(mapInputs);
+            int64_t nTxValueIn = tx.GetValueMapIn(mapInputs);
             int64_t nTxValueOut = tx.GetValueOut();
             nValueIn += nTxValueIn;
             nValueOut += nTxValueOut;
@@ -1711,7 +1728,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
 
     if (IsProofOfWork())
     {
-        int64_t nReward = GetProofOfWorkReward(nFees);
+        int64_t nReward = GetProofOfWorkReward(pindexBest->nHeight, nFees);
         // Check coinbase reward
         if (vtx[0].GetValueOut() > nReward)
             return DoS(50, error("ConnectBlock() : coinbase reward exceeded (actual=%" PRId64 " vs calculated=%" PRId64 ")",
@@ -2283,7 +2300,100 @@ bool CBlock::AcceptBlock()
     BOOST_FOREACH(const CTransaction& tx, vtx)
         if (!tx.IsFinal(nHeight, GetBlockTime()))
             return DoS(10, error("AcceptBlock() : contains a non-final transaction"));
+	
+	//
+	// Extra transaction check to protect minting attack aka Monte Spoof Attack
+	//
+	try
+	{
+		//
+		// First 10000 blocks ignored with extra check because of PoS with exceptions.
+		// This will be handled by checkpoint.cpp
+		//
+		// Ignore all attacked blocks.
+		//
+		if(nHeight > 10000 &&
+			// First Attack
+			nHeight != 696401 && nHeight != 696475 && nHeight != 696488 &&
+			nHeight != 696510 && nHeight != 696559 && nHeight != 696564 && nHeight != 696574 &&
+			nHeight != 696594 && nHeight != 696806
+			// Second Attack
+		//&& nHeight != 701721 && nHeight != 702122 && nHeight != 702150 && nHeight != 702160 &&
+			//nHeight != 702178 && nHeight != 702186 && nHeight != 702202
+			)
+		{
+			// Set logged values
+			CAmount tx_inputs_values = 0;
+			CAmount tx_outputs_values = 0;
+			CAmount block_reward = GetProofOfWorkReward(nHeight, 0);
+			
+			// Check that all transactions are finalized
+			for(const CTransaction& tx : vtx)
+			{
+				MapPrevTx mapInputs;
+				CAmount tx_MapIn_values, tx_MapOut_values;
+				
+				// Translate input hashes to transactions
+				if(!tx.GetMapTxInputs(mapInputs, true))
+				{
+					return DoS(10, error("AcceptBlock() : can not map tx inputs."));
+				}
+				
+				// Get transaction inputs/outputs values
+				tx_MapIn_values = tx.GetValueMapIn(mapInputs);		
+				tx_MapOut_values = tx.GetValueOut();
+				
+				// Increase total inputs values
+				if(tx_inputs_values + tx_MapIn_values >= 0)
+				{
+					tx_inputs_values += tx_MapIn_values;
+				}
+				else
+				{
+					return DoS(100, error("AcceptBlock(): overflow detected tx_inputs_values + tx.GetValueMapIn(mapInputs)\n"));
+				}
 
+				// Increase total output values
+				if(tx_outputs_values + tx_MapOut_values >= 0)
+				{
+					tx_outputs_values += tx_MapOut_values;
+				}
+				else
+				{
+					return DoS(100, error("AcceptBlock(): overflow detected tx_outputs_values + tx.GetValueOut()\n"));
+				}
+			}
+			
+			//
+			// Check if all transactions added up looks valid
+			//
+			if((tx_inputs_values + block_reward) < tx_outputs_values)
+			{
+				CAmount tx_diff = tx_outputs_values - tx_inputs_values - block_reward;
+				
+				return DoS(100, error("AcceptBlock() : Transactions inside Block %d contains inputs that is less than outputs. diff = %s\n", nHeight, FormatMoney(tx_diff).c_str()));
+			}
+		}
+	}
+	//
+	// GetValueMapIn can trigger an exception when transaction input can not be translated to a value 
+	//
+	catch(...)
+	{
+		//
+		// Existing Blocks that will have transactions double spend in one block will give a warning.
+		// New blocks will be stopped to protect agains attack
+		//
+		if(nHeight > 600000)
+		{
+			return DoS(100, error("AcceptBlock(): Block %d contains at least two transactions that uses the same coin.\n", nHeight));
+		}
+		else
+		{
+			printf("AcceptBlock(): can't check block %d with input/output check.\n", nHeight);
+		}
+	}
+	
     // Check that the block chain matches the known block chain up to a checkpoint
     if (!Checkpoints::CheckHardened(nHeight, hash))
         return DoS(100, error("AcceptBlock() : rejected by hardened checkpoint lock-in at %d", nHeight));

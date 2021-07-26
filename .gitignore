@@ -23,6 +23,9 @@ object_script.MotaCoin-qt.Release
 *.qm
 MotaCoin-Qt.app
 
+# db4
+db-4.8.30.NC.tar.gz
+db4/
 
 ## Eclipse
 #################

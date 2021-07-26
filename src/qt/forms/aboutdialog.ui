@@ -92,7 +92,7 @@
        </property>
        <property name="text">
         <string>Copyright © 2009-14 The Bitcoin developers
-Copyright © 2014-18 The MotaCoin developers</string>
+Copyright © 2014-20 The MotaCoin developers</string>
        </property>
        <property name="textInteractionFlags">
         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>

@@ -15,7 +15,7 @@
         <location line="+41"/>
         <source>Copyright © 2009-14 The Bitcoin developers
 Copyright © 2012-14 The NovaCoin developers
-Copyright © 2014-18 The MotaCoin developers</source>
+Copyright © 2014-20 The MotaCoin developers</source>
         <translation>Copyright © 2009-14 De Bitcoin ontwikkelaars
 Copyright © 2012-14 De NovaCoin ontwikkelaars
 Copyright © 2014 De MotaCoin ontwikkelaars</translation>

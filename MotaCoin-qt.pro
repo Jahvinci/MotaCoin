@@ -1,9 +1,12 @@
 macx{
  cache()
 }
+
+message($$_PRO_FILE_PWD_)
+
 TEMPLATE = app
 TARGET = MotaCoin-qt
-VERSION = 1.2.8
+VERSION = 1.3.2
 INCLUDEPATH += src src/json src/qt
 contains(QMAKE_CXX,arm-raspbian-linux-gnueabihf-g++) {
   QT_SYSROOT = /Users/tim/raspi/sysroot
@@ -22,10 +25,9 @@ QT += core gui widgets network dbus
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 lessThan(QT_MAJOR_VERSION, 5): CONFIG += static
 
-macx:release {
-  CONFIG += static
+macx|linux-g++:release {
+    CONFIG += static
 }
-
 
 QMAKE_CXXFLAGS += -fpermissive
 win32:QMAKE_CXXFLAGS += -Wa,-mbig-obj
@@ -39,15 +41,32 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 win32:BOOST_LIB_SUFFIX=-mt
 
 # use brew install for macx
+# brew tap rbenv/tap
+# brew install rbenv/tap/openssl@1.0
+
 macx {
-  BDB_INCLUDE_PATH=/usr/local/opt/berkeley-db@4/include
-  BDB_LIB_PATH=/usr/local/opt/berkeley-db@4/lib
-  OPENSSL_INCLUDE_PATH=/usr/local/opt/openssl/include
-  OPENSSL_LIB_PATH=/usr/local/opt/openssl/lib
-  QRENCODE_INCLUDE_PATH=/usr/local/opt/qrencode/include
-  QRENCODE_LIB_PATH=/usr/local/opt/qrencode/lib
+  BDB_INCLUDE_PATH=$$_PRO_FILE_PWD_/../db4/include
+  BDB_LIB_PATH=$$_PRO_FILE_PWD_/../db4/lib
+  OPENSSL_INCLUDE_PATH=$$_PRO_FILE_PWD_/../openssl@1.0/include
+  OPENSSL_LIB_PATH=$$_PRO_FILE_PWD_/../openssl@1.0/lib
+  QRENCODE_INCLUDE_PATH=$$_PRO_FILE_PWD_/../qrencode@4.1/include
+  QRENCODE_LIB_PATH=$$_PRO_FILE_PWD_/../qrencode@4.1/lib
   MINIUPNPC_INCLUDE_PATH=/usr/local/opt/miniupnpc/include
   MINIUPNPC_LIB_PATH=/usr/local/opt/miniupnpc/lib
+}
+
+# TODO write ifs to allow override
+linux-g++ {
+  BDB_INCLUDE_PATH=$$_PRO_FILE_PWD_/../db4/include
+  BDB_LIB_PATH=$$_PRO_FILE_PWD_/../db4/lib
+  OPENSSL_INCLUDE_PATH=$$_PRO_FILE_PWD_/../openssl@1.0/include
+  OPENSSL_LIB_PATH=$$_PRO_FILE_PWD_/../openssl@1.0/lib
+  QRENCODE_INCLUDE_PATH=$$_PRO_FILE_PWD_/../qrencode@4.1/include
+  QRENCODE_LIB_PATH=$$_PRO_FILE_PWD_/../qrencode@4.1/lib
+  BOOST_INCLUDE_PATH=/usr/include/x86_64-linux-gnu
+  BOOST_LIB_PATH=/usr/lib/x86_64-linux-gnu
+  MINIUPNPC_INCLUDE_PATH=/usr/include/x86_64-linux-gnu
+  MINIUPNPC_LIB_PATH=/usr/lib/x86_64-linux-gnu
 }
 
 contains(QMAKE_CXX,arm-raspbian-linux-gnueabihf-g++) {
@@ -56,7 +75,7 @@ contains(QMAKE_CXX,arm-raspbian-linux-gnueabihf-g++) {
   BDB_INCLUDE_PATH=$$QT_SYSROOT/usr/local/include
   BDB_LIB_PATH=$$QT_SYSROOT/usr/local/lib
   OPENSSL_INCLUDE_PATH=$$QT_SYSROOT/usr/local/openssl/include
-  OPENSSL_LIB_PATH=$$QT_SYSROOT/usr/local/openssl/lib 
+  OPENSSL_LIB_PATH=$$QT_SYSROOT/usr/local/openssl/lib
   QRENCODE_INCLUDE_PATH=$$QT_SYSROOT/usr/local/include
   QRENCODE_LIB_PATH=$$QT_SYSROOT/usr/local/lib
 #  BOOST_INCLUDE_PATH=$$QT_SYSROOT/usr/include/arm-linux-gnueabihf
@@ -113,7 +132,12 @@ contains(RELEASE, 1) {
     }
 }
 # come back and fix this later
-macx:QMAKE_CXXFLAGS += -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10
+macx:QMAKE_MAC_SDK = macosx10.15
+macx:QMAKE_CXXFLAGS += -Wno-error=implicit-function-declaration -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -mmacosx-version-min=10.10
+#macx:QMAKE_MAC_SDK.macosx.Path = ~/Applications/Xcode_10.2.1.app/Contents/Developer/Platforms/MacOSX.platform
+#macx:QMAKE_MAC_SDK.macosx.PlatformPath = ~/Applications/Xcode_10.2.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+#macx:QMAKE_MAC_SDK.macosx.SDKVersion = 10.14
+macx:QMAKE_CXXFLAGS +=
 
 
 !win32 {
@@ -132,11 +156,11 @@ lessThan(QT_MAJOR_VERSION, 5): win32: QMAKE_LFLAGS *= -static
 
 USE_QRCODE=1
 # use: qmake "USE_QRCODE=1"
-# libqrencode (http://fukuchi.org/works/qrencode/index.en.html) must be installed for support
+# libqrencode (http://fukuchi.org/works/qrencode/index.en.html) must be installed for support - configure with --enable_static
 contains(USE_QRCODE, 1) {
     message(Building with QRCode support)
     DEFINES += USE_QRCODE
-    macx:contains(RELEASE, 1)  {
+    macx|linux-g++:release  {
       LIBS += $$QRENCODE_LIB_PATH/libqrencode.a
     }
     else {
@@ -158,11 +182,11 @@ contains(USE_UPNP, -) {
     DEFINES += USE_UPNP=$$USE_UPNP STATICLIB MINIUPNP_STATICLIB
     INCLUDEPATH += $$MINIUPNPC_INCLUDE_PATH
     LIBS += $$join(MINIUPNPC_LIB_PATH,,-L,)
-    macx:contains(RELEASE, 1)  {
+    macx|linux-g++:release  {
       LIBS += $$MINIUPNPC_LIB_PATH/libminiupnpc.a
     }
     else {
-      LIBS += -lminiupnpc    
+      LIBS += -lminiupnpc
     }
     win32:LIBS += -liphlpapi
 }
@@ -218,7 +242,7 @@ win32 {
   }
   LIBS += -lshlwapi
   genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
-} else {    
+} else {
   contains(QMAKE_CXX,arm-raspbian-linux-gnueabihf-g++) {
     warning('yay raspbian')
     warning(QMAKE_CXX=$$QMAKE_CXX)
@@ -375,7 +399,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/sph_hamsi.h \
     src/sph_types.h \
     src/threadsafety.h \
-    src/txdb-leveldb.h
+    src/txdb-leveldb.h \
+    src/types/camount.h
 
 SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
@@ -511,17 +536,17 @@ isEmpty(BOOST_THREAD_LIB_SUFFIX) {
     BOOST_THREAD_LIB_SUFFIX = $$BOOST_LIB_SUFFIX
 }
 
-isEmpty(BDB_LIB_PATH) {
-    macx:BDB_LIB_PATH =/usr/local/Cellar/berkeley-db4/4.8.30/lib
-}
+#isEmpty(BDB_LIB_PATH) {
+#    macx:BDB_LIB_PATH =/Users/tim/Projects/bdb/db4/lib
+#}
 
 isEmpty(BDB_LIB_SUFFIX) {
     macx:BDB_LIB_SUFFIX = -4.8
 }
 
-isEmpty(BDB_INCLUDE_PATH) {
-    macx:BDB_INCLUDE_PATH = /usr/local/Cellar/berkeley-db4/4.8.30/include
-}
+#isEmpty(BDB_INCLUDE_PATH) {
+#    macx:BDB_INCLUDE_PATH = /Users/tim/Projects/bdb/db4/include
+#}
 
 isEmpty(BOOST_LIB_PATH) {
     macx:BOOST_LIB_PATH = /usr/local/lib
@@ -545,11 +570,6 @@ windows:!contains(MINGW_THREAD_BUGFIX, 0) {
     QMAKE_LIBS_QT_ENTRY = -lmingwthrd $$QMAKE_LIBS_QT_ENTRY
 }
 
-!windows:!macx {
-    DEFINES += LINUX
-    LIBS += -lrt
-}
-
 macx {
   HEADERS += src/qt/macdockiconhandler.h
   OBJECTIVE_SOURCES += src/qt/macdockiconhandler.mm
@@ -563,19 +583,21 @@ macx {
 }
 
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
-INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH
+# Be careful about the order
+INCLUDEPATH = $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH $$INCLUDEPATH
 LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
 
-# Static-linked binaries are not supported in osx 
-# https://developer.apple.com/library/content/qa/qa1118/_index.html
+message($$INCLUDEPATH)
 
-macx:contains(RELEASE, 1) {
+# Static-linked binaries are not supported in osx
+# https://developer.apple.com/library/content/qa/qa1118/_index.html
+macx|linux-g++:release {
   LIBS += $$OPENSSL_LIB_PATH/libssl.a $$OPENSSL_LIB_PATH/libcrypto.a $$BDB_LIB_PATH/libdb_cxx.a
-  LIBS += $$BOOST_LIB_PATH/libboost_system$${BOOST_LIB_SUFFIX}.a $$BOOST_LIB_PATH/libboost_filesystem$${BOOST_LIB_SUFFIX}.a $$BOOST_LIB_PATH/libboost_program_options$${BOOST_LIB_SUFFIX}.a $$BOOST_LIB_PATH/libboost_thread$${BOOST_LIB_SUFFIX}.a
+  LIBS += $$BOOST_LIB_PATH/libboost_system$${BOOST_LIB_SUFFIX}.a $$BOOST_LIB_PATH/libboost_filesystem$${BOOST_LIB_SUFFIX}.a $$BOOST_LIB_PATH/libboost_program_options$${BOOST_LIB_SUFFIX}.a $$BOOST_LIB_PATH/libboost_thread$${BOOST_LIB_SUFFIX}.a $$BOOST_LIB_PATH/libboost_chrono$${BOOST_LIB_SUFFIX}.a
 }
 else {
   LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
-  LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
+  LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX -lboost_chrono$$BOOST_THREAD_LIB_SUFFIX
 
   # -lgdi32 has to happen after -lcrypto (see  #681)
   windows:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
@@ -585,8 +607,14 @@ else {
 contains(RELEASE, 1) {
     !windows:!macx {
         # Linux: turn dynamic linking back on for c/c++ runtime libraries
-        LIBS += -Wl,-Bdynamic
+        LIBS += -Wl,-Bdynamic -ldl
     }
+}
+
+!windows:!macx {
+    DEFINES += LINUX
+    LIBS += -ldl
+	LIBS += -lrt
 }
 
 system($$QMAKE_LRELEASE -silent $$_PRO_FILE_)

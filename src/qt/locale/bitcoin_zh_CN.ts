@@ -15,7 +15,7 @@
         <location line="+41"/>
         <source>Copyright © 2009-14 The Bitcoin developers
 Copyright © 2012-14 The NovaCoin developers
-Copyright © 2014-18 The MotaCoin developers</source>
+Copyright © 2014-20 The MotaCoin developers</source>
         <translation>版权所有 © 2009-14 比特币Bitcoin开发组
 版权所有 © 2012-14 新星币Novacoin开发组
 版权所有 © 2014 黑币MotaCoin开发组</translation>
