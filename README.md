@@ -1,24 +1,23 @@
 <h1>MotaCoin</h1>
-<h3>MotaWallets Version 1.3.4 Hardfork Upgrade <h3>
+<h3>MotaWallets Version 1.4.1 Hardfork <h3>
 
 
 ## 1) Download the latest wallet for your OS
-Windows: https://www.dropbox.com/s/woiclk3mibzf19q/MotaWallet-1.3.7-win.zip?dl=1 
+Windows: 
+	QT https://www.dropbox.com/s/8i5zyat06pjd0ws/motacoin-qt.exe?dl=1
+	Daemon https://www.dropbox.com/s/1xfj04h4bvluuya/motacoind.exe?dl=1
 
-Mac: https://www.dropbox.com/s/w28xaqsbzvlcpav/MotaWallet-1.3.7-osx.zip?dl=1
+Mac: 	
+	https://www.dropbox.com/s/mfk9w4w6q1jvytr/motacoin-1.4.1-osx-unsigned.dmg?dl=1
 
-Linux: https://www.dropbox.com/s/3lms7znejk2uzxx/MotaWallet-1.3.7-linux.zip?dl=1
-
-(MotaCoind) Linux: https://www.dropbox.com/s/b8gyxoyduun2r3q/MotaServer-1.3.7-linux.zip?dl=1
-
-(MotaCoind compile script: https://www.dropbox.com/s/djdiunxpihyhm3y/motad.sh?dl=1
+Linux: 
+	QT https://www.dropbox.com/s/kh9ao5vdvnz9lkb/motacoin-qt?dl=1
+	Daemon https://www.dropbox.com/s/8kjxqgphxqx1me5/motacoind?dl=1
 
 ## 2) Unzip the wallet and replace your old MotaCoin-qt exe with the freshly unzipped one
 
-## 3) Resync blockchain 
-(Optional: You can use a bootstrap to speed the sync up)
-Bootstrap link: https://mega.nz/file/YBpWnTAQ#Z41VkFIQpWHsDWybax2kddIgBMN1tnps-hVI2bPJGgc
-    b) Extract Boostrap to MotaCoin directory.
+## 3) Resync blockchain through wallet tools or just delete the following three files in your mota directory: 
+	1) database 2)txleveldb 3) blk0001.dat , which are found in the following directories 
 	       Mac: Library/Application Support/MotaCoin
 	       Linux: /home/$USER/.MotaCoin/
 	       Windows: C:/Users/$USER/AppData/Roaming/MotaCoin
