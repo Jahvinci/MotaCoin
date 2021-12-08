@@ -3,16 +3,15 @@
 
 
 ## 1) Download the latest wallet for your OS
-Windows: 
-	QT https://www.dropbox.com/s/8i5zyat06pjd0ws/motacoin-qt.exe?dl=1
-	Daemon https://www.dropbox.com/s/1xfj04h4bvluuya/motacoind.exe?dl=1
+All Wallets: https://www.dropbox.com/sh/vhicvccf2ipnu7b/AADR1avWbIZpicFPmasbZkDha
+	
+Windows: https://www.dropbox.com/sh/h16oak61iadgq8w/AABgex3pafGnlB-IEkLL-QeRa?dl
 
-Mac: 	
-	https://www.dropbox.com/s/mfk9w4w6q1jvytr/motacoin-1.4.1-osx-unsigned.dmg?dl=1
+Mac: 	https://www.dropbox.com/sh/fn9j4xf30swschh/AABmpQ6co4lQssoUU-qSF-xIa
 
-Linux: 
-	QT https://www.dropbox.com/s/kh9ao5vdvnz9lkb/motacoin-qt?dl=1
-	Daemon https://www.dropbox.com/s/8kjxqgphxqx1me5/motacoind?dl=1
+Linux: https://www.dropbox.com/sh/5dwlvqwi2hmre5y/AACU7SApZxJw2gGr6i3JofQEa
+	
+Raspberry Pi: https://www.dropbox.com/sh/cdopavpcdbtm4m6/AADWQr899QKekfA05ayjPkCia?dl=0
 
 ## 2) Unzip the wallet and replace your old MotaCoin-qt exe with the freshly unzipped one
 
