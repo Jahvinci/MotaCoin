@@ -11,7 +11,7 @@ Mac: 	https://www.dropbox.com/sh/fn9j4xf30swschh/AABmpQ6co4lQssoUU-qSF-xIa
 
 Linux: https://www.dropbox.com/sh/5dwlvqwi2hmre5y/AACU7SApZxJw2gGr6i3JofQEa
 	
-Raspberry Pi: https://www.dropbox.com/sh/cdopavpcdbtm4m6/AADWQr899QKekfA05ayjPkCia?dl
+Raspberry Pi: https://www.dropbox.com/sh/cdopavpcdbtm4m6/AADWQr899QKekfA05ayjPkCia
 
 ## 2) Unzip the wallet and replace your old MotaCoin-qt exe with the freshly unzipped one
 
