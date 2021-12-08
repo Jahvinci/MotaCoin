@@ -5,13 +5,13 @@
 ## 1) Download the latest wallet for your OS
 All Wallets: https://www.dropbox.com/sh/vhicvccf2ipnu7b/AADR1avWbIZpicFPmasbZkDha
 	
-Windows: https://www.dropbox.com/sh/h16oak61iadgq8w/AABgex3pafGnlB-IEkLL-QeRa?dl
+Windows: https://www.dropbox.com/sh/h16oak61iadgq8w/AABgex3pafGnlB-IEkLL-QeRa
 
 Mac: 	https://www.dropbox.com/sh/fn9j4xf30swschh/AABmpQ6co4lQssoUU-qSF-xIa
 
 Linux: https://www.dropbox.com/sh/5dwlvqwi2hmre5y/AACU7SApZxJw2gGr6i3JofQEa
 	
-Raspberry Pi: https://www.dropbox.com/sh/cdopavpcdbtm4m6/AADWQr899QKekfA05ayjPkCia?dl=0
+Raspberry Pi: https://www.dropbox.com/sh/cdopavpcdbtm4m6/AADWQr899QKekfA05ayjPkCia?dl
 
 ## 2) Unzip the wallet and replace your old MotaCoin-qt exe with the freshly unzipped one
 
