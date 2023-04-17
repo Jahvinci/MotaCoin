@@ -1,0 +1,64 @@
+description "MotaCoin Core Daemon"
+
+start on runlevel [2345]
+stop on starting rc RUNLEVEL=[016]
+
+env MOTACOIND_BIN="/usr/local/bin/MotaCoind"
+env MOTACOIND_USER="motacoin"
+env MOTACOIND_GROUP="motacoin"
+env MOTACOIND_PIDDIR="/var/run/MotaCoind"
+# upstart can't handle variables constructed with other variables
+env MOTACOIND_PIDFILE="/var/run/MotaCoind/MotaCoind.pid"
+env MOTACOIND_CONFIGFILE="/etc/MotaCoin/MotaCoin.conf"
+env MOTACOIND_DATADIR="/var/lib/MotaCoind"
+
+expect fork
+
+respawn
+respawn limit 5 120
+kill timeout 60
+
+pre-start script
+    # this will catch non-existent config files
+    # MotaCoind will check and exit with this very warning, but it can do so
+    # long after forking, leaving upstart to think everything started fine.
+    # since this is a commonly encountered case on install, just check and
+    # warn here.
+    if ! grep -qs '^rpcpassword=' "$MOTACOIND_CONFIGFILE" ; then
+        echo "ERROR: You must set a secure rpcpassword to run MotaCoind."
+        echo "The setting must appear in $MOTACOIND_CONFIGFILE"
+        echo
+        echo "This password is security critical to securing wallets "
+        echo "and must not be the same as the rpcuser setting."
+        echo "You can generate a suitable random password using the following "
+        echo "command from the shell:"
+        echo
+        echo "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+        echo
+        echo "It is recommended that you also set alertnotify so you are "
+        echo "notified of problems:"
+        echo
+        echo "ie: alertnotify=echo %%s | mail -s \"MotaCoin Alert\"" \
+            "admin@foo.com"
+        echo
+        exit 1
+    fi
+
+    mkdir -p "$MOTACOIND_PIDDIR"
+    chmod 0755 "$MOTACOIND_PIDDIR"
+    chown $MOTACOIND_USER:$MOTACOIND_GROUP "$MOTACOIND_PIDDIR"
+    chown $MOTACOIND_USER:$MOTACOIND_GROUP "$MOTACOIND_CONFIGFILE"
+    chmod 0660 "$MOTACOIND_CONFIGFILE"
+end script
+
+exec start-stop-daemon \
+    --start \
+    --pidfile "$MOTACOIND_PIDFILE" \
+    --chuid $MOTACOIND_USER:$MOTACOIND_GROUP \
+    --exec "$MOTACOIND_BIN" \
+    -- \
+    -pid="$MOTACOIND_PIDFILE" \
+    -conf="$MOTACOIND_CONFIGFILE" \
+    -datadir="$MOTACOIND_DATADIR" \
+    -disablewallet \
+    -daemon
