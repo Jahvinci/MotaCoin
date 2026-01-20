@@ -5,6 +5,7 @@ src/clientversion.cpp export-subst
 
 # Custom for Visual Studio
 *.cs     diff=csharp
+*.sln    merge=union
 *.csproj merge=union
 *.vbproj merge=union
 *.fsproj merge=union
