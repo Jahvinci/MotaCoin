@@ -1,0 +1,30 @@
+# Test executable
+if ENABLE_TESTS
+
+test_motacoin_SOURCES = \
+  test/test_bitcoin.cpp \
+  test/block_signature_tests.cpp \
+  test/transaction_record_tests.cpp
+
+test_motacoin_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) -I$(srcdir)/test
+test_motacoin_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+test_motacoin_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
+
+test_motacoin_LDADD = \
+  $(LIBBITCOIN_SERVER) \
+  $(motacoin_bin_ldadd) \
+  $(top_srcdir)/depends/x86_64-pc-linux-gnu/lib/libboost_unit_test_framework-mt-x64.a
+
+if TARGET_WINDOWS
+test_motacoin_SOURCES += test/test_bitcoin-res.rc
+endif
+
+if TARGET_LINUX
+test_motacoin_LDADD += -lrt
+endif
+
+check_PROGRAMS += test_motacoin
+TESTS += test_motacoin
+
+endif # ENABLE_TESTS
+

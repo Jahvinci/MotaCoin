@@ -1,0 +1,25 @@
+# It is not recommended to modify this file in-place, because it will
+# be overwritten during package upgrades. If you want to add further
+# options or overwrite existing ones then use
+# $ systemctl edit bitcoind.service
+# See "man systemd.service" for details.
+
+# Note that almost all daemon options could be specified in
+# /etc/motacoin/motacoin.conf
+
+[Unit]
+Description=MotaCoin daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/MotaCoind -daemon -conf=/etc/motacoin/MotaCoin.conf -pid=/run/MotaCoind/MotaCoind.pid
+# Creates /run/motacoind owned by motacoin
+RuntimeDirectory=MotaCoind
+User=motacoin
+Type=forking
+PIDFile=/run/MotaCoind/MotaCoind.pid
+Restart=on-failure
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

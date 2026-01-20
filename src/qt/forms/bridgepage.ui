@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BridgePage</class>
+ <widget class="QWidget" name="BridgePage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Bridge</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="pageTitle">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;MotaCoin ↔ Solana Bridge&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <!-- Hidden legacy elements -->
+   <item>
+    <widget class="QGroupBox" name="configGroupBox">
+     <property name="title">
+      <string>Bridge Configuration</string>
+     </property>
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+     <layout class="QFormLayout" name="configFormLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="serverUrlLabel">
+        <property name="text">
+         <string>Bridge Server URL:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="serverUrlEdit"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="saveConfigButton">
+        <property name="text">
+         <string>Save Configuration</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="statusGroupBox">
+     <property name="title">
+      <string>Bridge Status</string>
+     </property>
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="statusGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="statusLabel">
+        <property name="text">
+         <string>Bridge Status:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="motacoinBlockLabel">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="solanaSlotLabel">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="motacoinBalanceLabel">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="solanaBalanceLabel">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="wmotaSupplyLabel">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <!-- Direction Toggle Buttons -->
+   <item>
+    <layout class="QHBoxLayout" name="directionButtonsLayout">
+     <item>
+      <widget class="QPushButton" name="motaToSolButton">
+       <property name="text">
+        <string>MOTA → Solana</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="minimumHeight">
+        <number>40</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="solToMotaButton">
+       <property name="text">
+        <string>Solana → MOTA</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+       <property name="minimumHeight">
+        <number>40</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <!-- Stacked Widget for Direction Content -->
+   <item>
+    <widget class="QStackedWidget" name="directionStack">
+     <!-- Page 0: MOTA to Solana -->
+     <widget class="QWidget" name="motaToSolPage">
+      <layout class="QVBoxLayout" name="motaToSolLayout">
+       <item>
+        <widget class="QGroupBox" name="transferGroupBox">
+         <property name="title">
+          <string>Send MOTA to Receive wMOTA</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="amountLabel">
+            <property name="text">
+             <string>MOTA Amount:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="amountEdit">
+            <property name="placeholderText">
+             <string>Enter amount (minimum 100 MOTA)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="destinationLabel">
+            <property name="text">
+             <string>Solana Address:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="destinationAddressEdit">
+            <property name="placeholderText">
+             <string>Enter your Solana wallet address</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="initiateButton">
+            <property name="text">
+             <string>Send MOTA</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QLabel" name="infoLabel">
+            <property name="text">
+             <string>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;span style='font-size:9pt; font-style:italic;'&gt;Fee: 1% · Minimum: 100 MOTA · 5 confirmations required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <!-- Page 1: Solana to MOTA -->
+     <widget class="QWidget" name="solToMotaPage">
+      <layout class="QVBoxLayout" name="solToMotaLayout">
+       <item>
+        <widget class="QGroupBox" name="receiveGroupBox">
+         <property name="title">
+          <string>Receive MOTA from Solana</string>
+         </property>
+         <layout class="QVBoxLayout" name="receiveLayout">
+          <item>
+           <widget class="QLabel" name="warningLabel">
+            <property name="text">
+             <string>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;span style='font-weight:600; color:#cc0000;'&gt;⚠️ IMPORTANT: Currently only Trust Wallet supports the memo field required for this transfer.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="step1Label">
+            <property name="text">
+             <string>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;span style='font-weight:600;'&gt;1.&lt;/span&gt; Open Trust Wallet and import wMOTA token:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="tokenInfoLabel">
+            <property name="text">
+             <string>&lt;html&gt;&lt;body&gt;&lt;p style='margin-left:20px; font-size:9pt;'&gt;Token: &lt;b&gt;MotaiHCWSq1NV9xXio4xtqdjGkk3qpavs5uAk1TLspT&lt;/b&gt;&lt;br/&gt;Name: Wrapped MotaCoin (wMOTA) · Decimals: 2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::TextSelectableByMouse</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="step2Label">
+            <property name="text">
+             <string>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;span style='font-weight:600;'&gt;2.&lt;/span&gt; Send wMOTA to this escrow address:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="escrowLayout">
+            <item>
+             <widget class="QLineEdit" name="escrowAddressEdit">
+              <property name="text">
+               <string>S2MfSdCSY9yAc8LfZ2SeorUqtEM4pKGsczUkXgPeysX</string>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="copyEscrowButton">
+              <property name="text">
+               <string>Copy</string>
+              </property>
+              <property name="maximumWidth">
+               <number>60</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="step3Label">
+            <property name="text">
+             <string>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;span style='font-weight:600;'&gt;3.&lt;/span&gt; In the MEMO field, enter your MOTA address with prefix:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="memoLayout">
+            <item>
+             <widget class="QLineEdit" name="memoEdit">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>Select address below</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="copyMemoButton">
+              <property name="text">
+               <string>Copy</string>
+              </property>
+              <property name="maximumWidth">
+               <number>60</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="addressSelectLayout">
+            <item>
+             <widget class="QLabel" name="yourAddressLabel">
+              <property name="text">
+               <string>Your MOTA Address:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="motaAddressCombo">
+              <property name="minimumWidth">
+               <number>350</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="exampleLabel">
+            <property name="text">
+             <string>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;span style='font-size:9pt; color:#666666;'&gt;Example memo: MOTA:MHgpmvH6JJR3WdcNdk31BG1LYNzKn69pro&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="feeInfoLabel">
+            <property name="text">
+             <string>&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;span style='font-size:9pt; font-style:italic;'&gt;Fee: 1% · ~32 Solana confirmations (~15 seconds)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <!-- Hidden legacy combo box -->
+   <item>
+    <widget class="QLabel" name="directionLabelText">
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="directionComboBox">
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <!-- Transfer History (hidden) -->
+   <item>
+    <widget class="QGroupBox" name="historyGroupBox">
+     <property name="visible">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Transfer History</string>
+     </property>
+     <layout class="QVBoxLayout" name="historyVerticalLayout">
+      <item>
+       <widget class="QPushButton" name="refreshButton">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="transfersTable">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
